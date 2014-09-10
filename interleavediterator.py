@@ -1,16 +1,15 @@
-class Sentinel(object):
-    pass
+_sentinel = ()
 
 class InterleavedIterator(object):
 
     def __init__(self, iterables, key):
-        self.iterables = [(i, Sentinel()) for i in iterables]
+        self.iterables = [(i, _sentinel) for i in iterables]
         self.key = key
 
     def _repopulate_latest(self):
         iterables = []
         for iterable, latest in self.iterables:
-            if isinstance(latest, Sentinel):
+            if latest is _sentinel:
                 try:
                     latest = iterable.next()
                 except StopIteration:
@@ -26,5 +25,5 @@ class InterleavedIterator(object):
     def next(self):
         self._repopulate_latest()
         index, (iterable, result) = sorted(enumerate(self.iterables), key=lambda x: self.key(x[1][1]))[0]
-        self.iterables[index] = (self.iterables[index][0], Sentinel())
+        self.iterables[index] = (self.iterables[index][0], _sentinel)
         return result
