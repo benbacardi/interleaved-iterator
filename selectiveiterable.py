@@ -8,7 +8,6 @@ class SelectiveIterable(object):
         self.key = key
 
     def _repopulate_latest(self):
-
         iterables = []
         for iterable, latest in self.iterables:
             if isinstance(latest, UsedValue):
