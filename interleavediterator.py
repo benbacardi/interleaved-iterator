@@ -1,4 +1,4 @@
-_sentinel = ()
+_sentinel = object()
 
 class InterleavedIterator(object):
 
